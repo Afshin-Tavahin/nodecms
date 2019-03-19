@@ -33,6 +33,9 @@ module.exports = class Application {
      * Express Config
      */
     setConfig() {
+
+
+
         app.use(express.static('public'));
         app.set('view engine', 'ejs');
         app.set('views' , path.resolve('./resource/views'));
@@ -47,7 +50,7 @@ module.exports = class Application {
             store : new MongoStore({ mongooseConnection : mongoose.connection })
         }));
 
-
+        require('app/passport/passport-local');
         app.use(cookieParser('mysecretkey'));
         app.use(flash());
         app.use(passport.initialize());

@@ -2,6 +2,8 @@ const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const User = require('app/models/user');
 
+
+
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
@@ -17,11 +19,22 @@ passport.use('local.register' , new localStrategy({
 
     usernameField : 'email',
     passwordField : 'password',
-    passReqTOCallback : true
-
+    passReqToCallback : true
 } , (req , email , password , done) => {
 
-    User.findOne({ 'email' : email} , (err , user) =>{
-        console.log(err , user)
+    User.findOne({ 'email' : email } , (err , user) =>{
+        if (err) return done(err);
+        if (user) return done(null, false,  req.flash('errors' , ' این نام کاربری در سیستم موجود می باشد'));
+
+        const newUser = new User({
+            name : req.body.name,
+            email,
+            password
+        });
+
+        newUser.save(err => {
+            if (err) return done(err , false , req.flash('errors' , 'ثبت نام با موفقیت انجام نشد اطفا دوباره سعی کنید'));
+            done(null , newUser);
+        })
     })
 }))
