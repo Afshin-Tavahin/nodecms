@@ -2,21 +2,23 @@ const controller = require('app/http/controllers/controller')
 
 
 class registerController extends controller {
+
+
+
     showRegistrationForm(req , res) {
-        res.render('auth/register', { messages : req.flash('errors') });
+
+        res.render('auth/register', { messages : req.flash('errors'), recaptcha : this.recaptcha.render() });
     }
 
-
     registerProccess(req, res, next){
-        this.validationData(req)
+        this.recaptchaValidation(req , res)
+            .then(result => this.validationData(req))
             .then( result => {
                 if (result) res.json('Register Proccess')
                 else res.redirect('/register')
-            });
+            })
+            .catch(err => console.log(err));
     }
-
-
-
         validationData(req){
             req.checkBody('name' , 'نام نمی تواند خالی باشد').notEmpty();
             req.checkBody('name' , 'نام نمی تواند کمتر از 5 کاراکتر باشد').isLength({min : 5});
@@ -27,7 +29,6 @@ class registerController extends controller {
 
             return req.getValidationResult()
                 .then( result => {
-
                     const errors = result.array();
                     const messages = [];
                     errors.forEach(err => messages.push(err.msg));
@@ -40,9 +41,5 @@ class registerController extends controller {
 
                 }).catch(err => console.log(err))
         }
-
-
 }
-
-
 module.exports = new registerController();
