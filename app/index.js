@@ -10,6 +10,9 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const passport = require('passport');
+const Helpers = require('./helpers');
+const rememberLogin = require('app/http/middleware/rememberLoin');
+
 
 module.exports = class Application {
     constructor() {
@@ -47,7 +50,7 @@ module.exports = class Application {
             secret : 'mysecretkey',
             resave : true,
             saveUninitialized : true,
-            cookie : { expires : new Date(Date.now() + 1000 * 60 * 60 * 5 )},
+            cookie : { expires : new Date(Date.now() + 1000 * 60 * 60 * 6 )},
             store : new MongoStore({ mongooseConnection : mongoose.connection })
         }));
 
@@ -56,15 +59,10 @@ module.exports = class Application {
         app.use(flash());
         app.use(passport.initialize());
         app.use(passport.session());
+        app.use(rememberLogin.handle);
         app.use((req, res, next) => {
 
-            app.locals = {
-
-                auth: {
-                    user: req.user,
-                    check: req.isAuthenticated()
-                }
-            };
+            app.locals = new Helpers(req, res).getObjects();
             next();
         })
     }
