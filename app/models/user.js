@@ -10,6 +10,8 @@ const userSchema = mongoose.Schema({
 
 }, { timestamps : true});
 
+
+
 userSchema.pre('save', function (next) {
     bcrypt.hash(this.password , bcrypt.genSaltSync(15) , (err, hash) => {
         if (err) console.log(err);
@@ -18,5 +20,9 @@ userSchema.pre('save', function (next) {
     });
 })
 
+
+userSchema.methods.comparePassword = function(password){
+    return bcrypt.compareSync(password, this.password);
+}
 
 module.exports = mongoose.model('User' , userSchema);

@@ -15,6 +15,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 
+// Define register strategy
 passport.use('local.register' , new localStrategy({
 
     usernameField : 'email',
@@ -36,5 +37,27 @@ passport.use('local.register' , new localStrategy({
             if (err) return done(err , false , req.flash('errors' , 'ثبت نام با موفقیت انجام نشد اطفا دوباره سعی کنید'));
             done(null , newUser);
         })
+    })
+}))
+
+
+// Define login strategy
+passport.use('local.login' , new localStrategy({
+
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+} , (req , email , password , done) => {
+
+    User.findOne({ 'email' : email } , (err , user) =>{
+        if (err) return done(err);
+
+        if (! user || ! user.comparePassword(password)) {
+            return done(null, false , req.flash( 'errors' , 'اطلاعات وارد شده صحیح نمی باشد '));
+        }
+
+
+        done(null , user);
+
     })
 }))

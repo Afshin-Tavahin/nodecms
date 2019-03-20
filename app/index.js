@@ -47,6 +47,7 @@ module.exports = class Application {
             secret : 'mysecretkey',
             resave : true,
             saveUninitialized : true,
+            cookie : { expires : new Date(Date.now() + 1000 * 60 * 60 * 5 )},
             store : new MongoStore({ mongooseConnection : mongoose.connection })
         }));
 
@@ -55,6 +56,17 @@ module.exports = class Application {
         app.use(flash());
         app.use(passport.initialize());
         app.use(passport.session());
+        app.use((req, res, next) => {
+
+            app.locals = {
+
+                auth: {
+                    user: req.user,
+                    check: req.isAuthenticated()
+                }
+            };
+            next();
+        })
     }
 
     setRouters() {
