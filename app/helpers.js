@@ -1,21 +1,22 @@
 module.exports = class Helpers {
-
-    constructor(req , res){
-        this.reg = req;
+    
+    constructor(req , res) {
+        this.req = req;
         this.res = res;
     }
 
-    getObjects(){
-        return{
+
+    getObjects() {
+        return {
             auth : this.auth()
         }
     }
 
     auth() {
         return {
-            check : this.reg.isAuthenticated(),
-            user : this.reg.user
+            check : this.req.isAuthenticated(),
+            user : this.req.user
         }
     }
-    
+
 }

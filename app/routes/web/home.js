@@ -1,44 +1,27 @@
 const express = require('express');
 const router = express.Router();
 
-
-// Controllers Section
+// Controllers
 const homeController = require('app/http/controllers/homeController');
 const loginController = require('app/http/controllers/auth/loginController');
 const registerController = require('app/http/controllers/auth/registerController');
-const logoutController = require('app/http/controllers/auth/logoutController');
 
 
-// Middleware
-const redirectfAuthentication = require('app/http/middleware/redirectfAuthentication');
-
+// Middlewares
+const redirectIfAuthenticated = require('app/http/middleware/redirectIfAuthenticated');
 
 // Home Routes
 router.get('/' , homeController.index);
+router.get('/login' , redirectIfAuthenticated.handle , loginController.showLoginForm);
+router.post('/login' , redirectIfAuthenticated.handle , loginController.loginProccess);
 
+router.get('/register' , redirectIfAuthenticated.handle , registerController.showRegsitrationForm);
+router.post('/register' , redirectIfAuthenticated.handle , registerController.registerProccess);
 
-
-// Login and Logout route
-router.get('/login' , redirectfAuthentication.handle , loginController.showLoginForm);
-router.post('/login', redirectfAuthentication.handle ,  loginController.loginProccess);
-router.get('/logout' , logoutController.logoutProccess);
-
-
-
-
-// Register route
-router.get('/register' , redirectfAuthentication.handle , registerController.showRegistrationForm);
-router.post('/register', redirectfAuthentication.handle , registerController.registerProccess);
-
-
-
-
-// router.get('/logout', (req, res) => {
-//     req.logout();
-//     req.redirect('/');
-// });
-
-
-
+router.get('/logout' , (req ,res) => {
+    req.logout();
+    res.clearCookie('remember_token');
+    res.redirect('/');
+});
 
 module.exports = router;

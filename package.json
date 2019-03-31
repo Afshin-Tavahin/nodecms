@@ -1,41 +1,33 @@
 {
-  "name": "nodecms",
+  "name": "nodejs-cms",
   "version": "1.0.0",
-  "description": "node cms",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Afshin-Tavahin/nodecms.git"
-  },
-  "author": "Afshin Tavahin",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Afshin-Tavahin/nodecms/issues"
-  },
-  "homepage": "https://github.com/Afshin-Tavahin/nodecms#readme",
   "dependencies": {
     "app-module-path": "^2.2.0",
-    "auto-bind": "^2.0.0",
-    "bcrypt": "^3.0.5",
-    "body-parser": "^1.18.3",
+    "auto-bind": "^1.2.0",
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
-    "connect-mongo": "^2.0.3",
-    "cookie-parser": "^1.4.4",
-    "dotenv": "^7.0.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
-    "express-recaptcha": "^4.1.1",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
+    "ejs": "^2.5.9",
+    "express": "^4.16.3",
+    "express-recaptcha": "^4.0.2",
     "express-session": "^1.15.6",
-    "express-validator": "^5.3.1",
-    "mongoose": "^5.4.18",
+    "express-validator": "^5.1.2",
+    "mongoose": "^5.0.16",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "unique-string": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.17.3"
   }
 }

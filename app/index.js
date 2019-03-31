@@ -9,8 +9,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const passport = require('passport');
 const Helpers = require('./helpers');
-const rememberLogin = require('app/http/middleware/rememberLoin');
-
+const rememberLogin = require('app/http/middleware/rememberLogin');
 
 module.exports = class Application {
     constructor() {
@@ -35,10 +34,10 @@ module.exports = class Application {
      */
     setConfig() {
         require('app/passport/passport-local');
+ 
         app.use(express.static(config.layout.public_dir));
         app.set('view engine', config.layout.view_engine);
-        app.set('views' , config.layout.view_dir );
-
+        app.set('views' , config.layout.view_dir);
 
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended : true }));
@@ -49,15 +48,15 @@ module.exports = class Application {
         app.use(passport.initialize());
         app.use(passport.session());
         app.use(rememberLogin.handle);
-        app.use((req, res, next) => {
 
+        app.use((req , res , next) => {
             app.locals = new Helpers(req, res).getObjects();
             next();
-        })
+        });
     }
 
     setRouters() {
         app.use(require('app/routes/api'));
         app.use(require('app/routes/web'));        
     }
-};
+}

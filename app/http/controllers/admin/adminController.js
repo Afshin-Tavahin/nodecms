@@ -1,18 +1,13 @@
-const controller = require('app/http/controllers/controller')
-
+const controller = require('app/http/controllers/controller');
 
 class indexController extends controller {
     index(req , res) {
-        res.render('admin')
+        res.json('Admin Page');
     }
 
-    course ( req , res) {
-        res.json('Course Overview here')
+    courses(req , res) {
+        res.json('course Page');
     }
 }
-
-
-
-
 
 module.exports = new indexController();
